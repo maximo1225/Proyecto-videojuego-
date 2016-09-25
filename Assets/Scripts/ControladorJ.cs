@@ -6,9 +6,12 @@ public class ControladorJ : MonoBehaviour {
 
     public Text[] listaBotones;
     private string JugadorT;//variable mantendra una X u O dependiendo el turno del jugador
+    public GameObject mensaje;
+    public Text TextoMensaje;
 
     void Awake()
     {
+        mensaje.SetActive(false);
         ReferenciaBotones();
         JugadorT = "X";
     }
@@ -87,5 +90,8 @@ public class ControladorJ : MonoBehaviour {
         {
             listaBotones[i].GetComponentInParent<Button>().interactable = false;
         }
+
+        mensaje.SetActive(true);
+        TextoMensaje.text = "Ganó " + JugadorT;
     }
 }
