@@ -81,7 +81,7 @@ public class ControladorJ : MonoBehaviour {
         if(movNum >= 9)
         {
             mensaje.SetActive(true);
-            TextoMensaje.text = "Empate!"
+            TextoMensaje.text = "Empate!";
         }
 
         Cambiardeturno();
