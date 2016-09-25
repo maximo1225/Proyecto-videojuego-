@@ -8,12 +8,14 @@ public class ControladorJ : MonoBehaviour {
     private string JugadorT;//variable mantendra una X u O dependiendo el turno del jugador
     public GameObject mensaje;
     public Text TextoMensaje;
+    private int movNum;
 
     void Awake()
     {
         mensaje.SetActive(false);
         ReferenciaBotones();
         JugadorT = "X";
+        movNum = 0;
     }
 
     void ReferenciaBotones()
@@ -33,6 +35,7 @@ public class ControladorJ : MonoBehaviour {
     //verifica si uno de los jugadores ha gana para finalizar el juego
     public void FinalizarTurno()
     {
+        movNum++;
         if(listaBotones[0].text == JugadorT && listaBotones[1].text == JugadorT
             && listaBotones[2].text == JugadorT)
         {
@@ -72,6 +75,13 @@ public class ControladorJ : MonoBehaviour {
             && listaBotones[6].text == JugadorT)
         {
             GameOver();
+        }
+
+        //lanza el mensaje cuando los jugadores quedan empate.
+        if(movNum >= 9)
+        {
+            mensaje.SetActive(true);
+            TextoMensaje.text = "Empate!"
         }
 
         Cambiardeturno();
