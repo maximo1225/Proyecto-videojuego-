@@ -8,7 +8,14 @@ public class ControladorJ : MonoBehaviour {
     private string JugadorT;//variable mantendra una X u O dependiendo el turno del jugador
     public GameObject mensaje;
     public Text TextoMensaje;
+    public GameObject botonReiniciar;
     private int movNum;
+
+    void Start()
+    {
+        //al iniciar el juego se desactiva el boton de reiniciar
+        botonReiniciar.SetActive(false);
+    }
 
     void Awake()
     {
@@ -78,10 +85,9 @@ public class ControladorJ : MonoBehaviour {
         }
 
         //lanza el mensaje cuando los jugadores quedan empate.
-        if(movNum >= 9)
+        else if(movNum >= 9)
         {
-            mensaje.SetActive(true);
-            TextoMensaje.text = "Empate!";
+            GameOver();
         }
 
         Cambiardeturno();
@@ -93,15 +99,37 @@ public class ControladorJ : MonoBehaviour {
         JugadorT = (JugadorT == "X") ? "O" : "X";
     }
 
+    public void Reiniciar()
+    {
+        JugadorT = "X";
+        movNum = 0;
+        mensaje.SetActive(false);
+
+        for (int i = 0; i < listaBotones.Length; i++)
+        {
+            listaBotones[i].GetComponentInParent<Button>().interactable = true;
+            listaBotones[i].text = "";
+        }
+        botonReiniciar.SetActive(false);
+    }
+
+
+
     //desactiva todos los botones del juego para finalizarlo
     void GameOver()
     {
         for(int i = 0; i < listaBotones.Length; i++)
         {
             listaBotones[i].GetComponentInParent<Button>().interactable = false;
+            
         }
 
         mensaje.SetActive(true);
-        TextoMensaje.text = "Ganó " + JugadorT;
+
+        TextoMensaje.text = (movNum >= 9) ?  "Empate!" :  "Ganó " + JugadorT;
+
+        botonReiniciar.SetActive(true);
     }
+
+   
 }
