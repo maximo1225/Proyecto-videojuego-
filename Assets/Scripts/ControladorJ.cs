@@ -9,12 +9,16 @@ public class ControladorJ : MonoBehaviour {
     public GameObject mensaje;
     public Text TextoMensaje;
     public GameObject botonReiniciar;
+    public GameObject P1;
+    public GameObject P2;
     private int movNum;
 
     void Start()
     {
         //al iniciar el juego se desactiva el boton de reiniciar
         botonReiniciar.SetActive(false);
+        CambiarEstadoJugador(true, false);
+        
     }
 
     void Awake()
@@ -39,11 +43,18 @@ public class ControladorJ : MonoBehaviour {
         return JugadorT;
     }
 
+    //para manejar el estado del jugador
+    private void CambiarEstadoJugador(bool p1, bool p2)
+    {
+        P1.GetComponentInParent<Button>().interactable = p1;
+        P2.GetComponentInParent<Button>().interactable = p2;
+    }
+
     //verifica si uno de los jugadores ha gana para finalizar el juego
     public void FinalizarTurno()
     {
         movNum++;
-        if(listaBotones[0].text == JugadorT && listaBotones[1].text == JugadorT
+        if (listaBotones[0].text == JugadorT && listaBotones[1].text == JugadorT
             && listaBotones[2].text == JugadorT)
         {
             GameOver();
@@ -83,20 +94,33 @@ public class ControladorJ : MonoBehaviour {
         {
             GameOver();
         }
-
         //lanza el mensaje cuando los jugadores quedan empate.
-        else if(movNum >= 9)
+        else if (movNum >= 9)
         {
             GameOver();
         }
+        else
+        {
+            Cambiardeturno();
+        }
+        
 
-        Cambiardeturno();
+        
     }
 
     
     void Cambiardeturno()
     {
         JugadorT = (JugadorT == "X") ? "O" : "X";
+        if(JugadorT == "X")
+        {
+            CambiarEstadoJugador(true, false);
+        }
+        else
+        {
+            CambiarEstadoJugador(false, true);
+        }
+
     }
 
     public void Reiniciar()
@@ -111,6 +135,7 @@ public class ControladorJ : MonoBehaviour {
             listaBotones[i].text = "";
         }
         botonReiniciar.SetActive(false);
+        CambiarEstadoJugador(true, false);
     }
 
 
@@ -125,8 +150,8 @@ public class ControladorJ : MonoBehaviour {
         }
 
         mensaje.SetActive(true);
-
-        TextoMensaje.text = (movNum >= 9) ?  "Empate!" :  "Ganó " + JugadorT;
+        string Jugador = (JugadorT == "X") ? "P1" : "P2";
+        TextoMensaje.text = (movNum >= 9) ?  "Empate!" :  "Ganó " + Jugador;
 
         botonReiniciar.SetActive(true);
     }
