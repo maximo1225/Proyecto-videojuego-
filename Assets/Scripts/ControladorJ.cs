@@ -12,15 +12,38 @@ public class ControladorJ : MonoBehaviour {
     public GameObject P1;
     public GameObject P2;
     private int movNum;
+    
+    public bool turno;
+    public float delay;
+    private int value;
 
     void Start()
     {
         //al iniciar el juego se desactiva el boton de reiniciar
         botonReiniciar.SetActive(false);
         CambiarEstadoJugador(true, false);
+        turno = true;
         
     }
 
+	void Update()
+	{
+		if( turno == false)
+		{
+			delay += delay * Time.deltaTime;
+			if(delay >= 100)
+			{
+				value = Random.Range(0, 8);
+				if(listaBotones[value].GetComponentInParent<Button>().interactable == true)
+				{
+					listaBotones[value].text = GetTurnoString();
+					listaBotones[value].GetComponentInParent<Button>().interactable = false;
+					FinalizarTurno();
+				}
+			}
+		}
+	}
+	
     void Awake()
     {
         mensaje.SetActive(false);
@@ -103,9 +126,6 @@ public class ControladorJ : MonoBehaviour {
         {
             Cambiardeturno();
         }
-        
-
-        
     }
 
     
@@ -114,11 +134,14 @@ public class ControladorJ : MonoBehaviour {
         JugadorT = (JugadorT == "X") ? "O" : "X";
         if(JugadorT == "X")
         {
-            CambiarEstadoJugador(true, false);
+			  turno = true;
+           CambiarEstadoJugador(true, false);
+           delay = 10;
         }
         else
         {
-            CambiarEstadoJugador(false, true);
+			  turno = false;
+           CambiarEstadoJugador(false, true);
         }
 
     }
@@ -150,11 +173,15 @@ public class ControladorJ : MonoBehaviour {
         }
 
         mensaje.SetActive(true);
-        string Jugador = (JugadorT == "X") ? "P1" : "P2";
+        string Jugador = (JugadorT == "X") ? "P1" : "Computador";
         TextoMensaje.text = (movNum >= 9) ?  "Empate!" :  "Ganó " + Jugador;
 
         botonReiniciar.SetActive(true);
     }
 
+	public void VolverMenu()
+	{
+		Application.LoadLevel(0);
+	}
    
 }

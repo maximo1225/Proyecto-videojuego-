@@ -10,11 +10,25 @@ public class Botones : MonoBehaviour {
 
     public void SetSpace()
     {
-        botonTexto.text = controladorJ.GetTurnoString();
-        boton.interactable = false;
-        controladorJ.FinalizarTurno();
+		if(controladorJ.delay > 0)
+		{
+			  botonTexto.text = controladorJ.GetTurnoString();
+			  boton.interactable = false;
+			  controladorJ.FinalizarTurno();
+		}
+		else
+		{
+			botonTexto.text = controladorJ.GetTurnoString();
+			boton.interactable = false;
+			controladorJ.FinalizarTurno();
+			controladorJ.delay = 0;
+		}
     }
 
+	 public void desactivarBotonesComputador()
+	 {
+		 
+	 }
     public void SetGameControllerReference(ControladorJ controlador)
     {
         controladorJ = controlador;
